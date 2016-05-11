@@ -1,0 +1,1 @@
+﻿<%@ Application Codebehind="Global.asax.cs" Language="C#" Inherits="Creuna.Episerver.RedirectHandler.TestApp.EPiServerApplication" %>

@@ -1,0 +1,298 @@
+﻿.notfound {
+    overflow: hidden;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+}
+
+.redirecttable { width: 80%; }
+
+.notfound .delete.suggestions input {
+    bottom: 2px;
+    position: relative;
+    text-align: center;
+    width: 36px;
+}
+
+.notfound div.longer, .delete.suggestions {
+    float: left;
+    margin-top: 3px;
+    width: 87%;
+}
+
+.notfound-full { width: 100%; }
+
+.notfound div.shorter {
+    float: left;
+    text-align: center;
+    width: 13%;
+    word-break: normal;
+}
+
+.notfound td.longer {
+    width: 45%;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+.notfound td.shorter {
+    text-align: center;
+    width: auto;
+}
+
+.notfound td.shorter a, input {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.notfound .redirect-longer {
+    min-height: 20px;
+    width: 96%;
+}
+
+.notfound .right, .notfound .rightsearch { float: right; }
+
+.notfound .notfound.wildcard {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.notfound .pager, .notfound .pagercenter, .notfound .pagerright {
+    display: inline-block;
+    white-space: nowrap;
+    width: 30%;
+}
+
+.notfound .pager { float: left; }
+
+.notfound .pagercenter {
+    float: left;
+    margin-left: 55px;
+    text-align: center;
+}
+
+.notfound .pagerright {
+    float: right;
+    text-align: center;
+}
+
+.notfound .pagercenter span, .pagercenter a { vertical-align: top; }
+
+.notfound .arrow img { vertical-align: bottom; }
+
+.notfound .pagerright .refresh {
+    background-color: #ededed;
+    background-image: url(/App_Themes/Default/Images/Tools/Refresh.gif);
+    background-position: center;
+    background-repeat: no-repeat;
+    float: right;
+    height: 22px;
+    position: relative;
+    width: 22px;
+}
+
+.notfound .pagerright .refreshinput {
+    float: right;
+    height: 20px;
+    margin-right: 0.3em;
+    text-align: center;
+    width: 30px;
+}
+
+.notfound .pagerright .refreshlabel {
+    float: right;
+    margin-top: 3px;
+}
+
+.notfound .pagerwrapper {
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.notfound .redirecthidden { display: none; }
+
+.notfound .notfound.ignore2 {
+    background: url("Images/BaseSprite.png") no-repeat scroll 30px -350px transparent;
+    color: #0077EE;
+    float: right;
+    font-size: 9px;
+    min-width: 20px;
+    padding: 3px 16px 0 0;
+    text-align: left;
+    text-transform: lowercase;
+    width: 29px;
+}
+
+.notfound .notfound.ignore {
+    float: left;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    text-align: center;
+    top: 4px;
+    vertical-align: bottom;
+    width: 100%;
+}
+
+.notfound .notfound.add2 {
+    background: url("Images/BaseSprite.png") no-repeat scroll 30px -447px transparent;
+    border: 0;
+    color: #0077EE;
+    float: right;
+    font-size: 9px;
+    min-width: 20px;
+    padding: 3px 16px 0 0;
+    text-align: left;
+    text-transform: lowercase;
+    width: 29px;
+}
+
+
+.notfound .shorter.delete.notfound.fixedrow { width: 100px; }
+
+.notfound.hidden { display: none; }
+
+.notfound.add { padding: 0 3px 0px 3px; }
+
+
+.notfound.showreferers {
+    background-color: transparent;
+    background-position: right;
+    border: none;
+    color: #4878D4;
+    cursor: pointer;
+    margin-left: 3px;
+    padding: 1px 14px 1px 5px;
+}
+
+.notfound.showreferers.up {
+    background: url("Images/navigate_open.png") no-repeat scroll transparent;
+    background-position: right 2px;
+}
+
+.notfound.showreferers.down {
+    background: url("Images/navigate_close.png") no-repeat scroll transparent;
+    background-position: right;
+}
+
+.notfound.refererlist li {
+    list-style-position: inside;
+    list-style-type: circle;
+}
+
+.notfound.refererlist {
+    padding-bottom: 4px;
+    padding-left: 10px;
+    padding-right: 4px;
+    padding-top: 4px;
+}
+
+.notfound button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+.notfound button {
+    padding: 3px 7px;
+    /*min-height: 20px;
+    padding: 14px;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;*/
+}
+
+.notfound.allreferers {
+    color: #398AC9;
+    font-weight: bold;
+}
+
+.notfound.epi-tabView { margin-bottom: 0; }
+
+.notfound.about {
+    background: url("Images/SpriteTools.png") no-repeat scroll 0 -4130px transparent;
+    float: right;
+    height: 18px;
+    width: 18px;
+}
+
+.notfound .ntab.selected, .notfound .ntab {
+    border: 1px solid gray;
+    color: #FFFFFF !important;
+    float: left;
+    font-size: 13px;
+    font-weight: normal;
+    text-shadow: none;
+}
+
+.notfound .ntab a {
+    float: left;
+    padding: 9px;
+}
+
+.notfound .ntab.selected { background: #555B64; }
+
+.notfound .ntab {
+    background: #eee;
+    border: 1px solid #DDDDDD;
+}
+
+.notfound .selected.ntab a { color: #FFFFFF !important; }
+
+.notfound ul.epi-tabView-navigation { background: 0; }
+
+.notfound.row, .notfound.alt.header {
+    float: left;
+    width: 49%;
+    word-break: break-all;
+}
+
+.notfound.row.right { float: right; }
+
+.notfound.alt.header {
+    border-left: solid 1px #eee;
+    padding-left: 10px;
+}
+
+.notfoundbutton {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #ebebeb));
+    background: -moz-linear-gradient(center top, #ededed 5%, #ebebeb 100%);
+    background-color: #ededed;
+    border: 2px solid #d1d1d1;
+    color: #050505;
+    display: inline-block;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ebebeb');
+    font-family: Verdana;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 6px 4px;
+    text-decoration: none;
+}
+
+.notfoundbutton:hover {
+    background: none;
+    background-color: #c2ce00;
+    border-color: #a1a1a1;
+    cursor: pointer;
+}
+
+.notfoundbutton:active {
+    position: relative;
+    top: 1px;
+}
+
+.notfound-search {
+    height: 21px;
+    margin: 0 0 0 5px;
+    padding-bottom: 4px;
+}
+
+.notfoundbutton.search {
+    position: relative;
+    top: 2px;
+}
+
+.notfound .rightsearch {
+    height: 21px;
+    position: relative;
+    top: -7px;
+}
