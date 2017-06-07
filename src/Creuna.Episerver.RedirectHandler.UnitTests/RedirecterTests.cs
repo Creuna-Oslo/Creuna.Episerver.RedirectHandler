@@ -308,13 +308,13 @@ namespace Creuna.Episerver.RedirectHandler
         public class When_the_notfound_url_contains_escaped_characters : RedirecterTests
         {
             [Test]
-            [TestCase("http://local.seafoodfromnorway.int/recipes/england/norwegian-skrei,-michel%E2%80%99s-way-skrei-bourguignonne")]
-            [TestCase("http://local.seafoodfromnorway.int/recipes/england/norwegian-skrei,-michel%e2%80%99s-way-skrei-bourguignonne")]
+            [TestCase("http://www.website.com/path/sub/norwegian-skrei,-michel%E2%80%99s-way-skrei-bourguignonne")]
+            [TestCase("http://www.website.com/path/sub/norwegian-skrei,-michel%e2%80%99s-way-skrei-bourguignonne")]
             public void Redirect_is_done_regardless_of_encoding_casing(string notFound)
             {
                 var expected = "result";
                 _redirects.Add(new CustomRedirect(
-                    "http://local.seafoodfromnorway.int/Recipes/England/Norwegian-Skrei,-Michel’s-Way-Skrei-Bourguignonne",
+                    "http://www.website.com/Path/Sub/Norwegian-Skrei,-Michel’s-Way-Skrei-Bourguignonne",
                     expected, false, true, true));
                 _sut.Redirect(string.Empty, new Uri(notFound))
                     .NewUrl.ShouldEqual(expected);
@@ -324,14 +324,14 @@ namespace Creuna.Episerver.RedirectHandler
         public class When_the_old_url_contains_escaped_characters : RedirecterTests
         {
             [Test]
-            [TestCase("http://local.seafoodfromnorway.int/recipes/england/norwegian-skrei,-michel%E2%80%99s-way-skrei-bourguignonne")]
-            [TestCase("http://local.seafoodfromnorway.int/recipes/england/norwegian-skrei,-michel%e2%80%99s-way-skrei-bourguignonne")]
-            [TestCase("http://local.seafoodfromnorway.int/Recipes/England/Norwegian-Skrei,-Michel’s-Way-Skrei-Bourguignonne")]
+            [TestCase("http://www.website.com/path/sub/norwegian-skrei,-michel%E2%80%99s-way-skrei-bourguignonne")]
+            [TestCase("http://www.website.com/path/sub/norwegian-skrei,-michel%e2%80%99s-way-skrei-bourguignonne")]
+            [TestCase("http://www.website.com/Path/Sub/Norwegian-Skrei,-Michel’s-Way-Skrei-Bourguignonne")]
             public void Redirect_is_done_regardless_of_encoding_casing(string notFound)
             {
                 var expected = "result";
                 _redirects.Add(new CustomRedirect(
-                    "http://local.seafoodfromnorway.int/Recipes/England/Norwegian-Skrei,-Michel%e2%80%99s-Way-Skrei-Bourguignonne",
+                    "http://www.website.com/Path/Sub/Norwegian-Skrei,-Michel%e2%80%99s-Way-Skrei-Bourguignonne",
                     expected, false, true, true));
                 _sut.Redirect(string.Empty, new Uri(notFound))
                     .NewUrl.ShouldEqual(expected);
@@ -343,10 +343,10 @@ namespace Creuna.Episerver.RedirectHandler
             [Test]
             public void The_query_string_is_recognized()
             {
-                var oldUrl = "http://staging.seafoodfromnorway.co.uk/recipes/england/norwegian-skrei,-michel%E2%80%99s-way-skrei-bourguignonne?jalla=mikk";
+                var oldUrl = "http://www.website.com/path/sub/norwegian-skrei,-michel%E2%80%99s-way-skrei-bourguignonne?jalla=mikk";
                 var expected = "result";
                 _redirects.Add(new CustomRedirect(
-                    "http://staging.seafoodfromnorway.co.uk/Recipes/England/Norwegian-Skrei,-Michel%e2%80%99s-Way-Skrei-Bourguignonne",
+                    "http://www.website.com/Path/Sub/Norwegian-Skrei,-Michel%e2%80%99s-Way-Skrei-Bourguignonne",
                     expected, false, true, true));
                 _sut.Redirect(string.Empty, new Uri(oldUrl))
                     .NewUrl.ShouldEqual(expected);
