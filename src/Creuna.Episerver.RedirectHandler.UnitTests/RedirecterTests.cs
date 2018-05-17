@@ -1,4 +1,5 @@
 ﻿using System;
+using Creuna.Episerver.RedirectHandler.Core;
 using Creuna.Episerver.RedirectHandler.Core.Configuration;
 using Creuna.Episerver.RedirectHandler.Core.CustomRedirects;
 using Creuna.Episerver.RedirectHandler.Core.Logging;
@@ -22,6 +23,7 @@ namespace Creuna.Episerver.RedirectHandler
             _configuration = new RedirectConfiguration();
             _redirects = new CustomRedirectCollection();
             _sut = new Redirecter(_redirects, _configuration);
+            UrlStandardizer.Accessor = () => new DefaultUrlStandardizer();
             RequestLogger.Instance = new RequestLogger(_configuration);
         }
 
@@ -32,7 +34,7 @@ namespace Creuna.Episerver.RedirectHandler
             public override void SetUp()
             {
                 base.SetUp();
-                _redirect = new CustomRedirect("/no/", "/new/?redirected=1", true, false, true);
+                _redirect = new CustomRedirect("/no/", "/new/?redirected=1", appendMatchToNewUrl: true, exactMatch: false, includeQueryString: true);
                 _redirects.Add(_redirect);
             }
 
@@ -76,12 +78,12 @@ namespace Creuna.Episerver.RedirectHandler
             {
                 base.SetUp();
 
-                _redirects.Add(new CustomRedirect("/no", "newurl", false, true, false, 0));
+                _redirects.Add(new CustomRedirect("/no", "newurl", appendMatchToNewUrl: false, exactMatch: true, includeQueryString: false, state: 0));
             }
 
             [Test]
             [TestCase("http://www.somewhere.com/nooooooo")]
-            [TestCase("http://www.somewhere.com/no/")]
+            [TestCase("http://www.somewhere.com/no/1")]
             public void Partial_match_should_not_get_redirected(string oldUri)
             {
                 var result = _sut.Redirect("", new Uri(oldUri));
@@ -225,7 +227,7 @@ namespace Creuna.Episerver.RedirectHandler
         public class When_an_old_url_with_special_chracters_is_set_up_both_with_and_without_querystrings : RedirecterTests
         {
             [Test]
-            public void _then_the_most_specific_redirect_is_used()
+            public void _and_not_found_url_contains_norwegian_characters_then_the_most_specific_redirect_is_used()
             {
                 _redirects.Add(new CustomRedirect("/åøæ",
                     "/b", false, true, true));
@@ -236,7 +238,18 @@ namespace Creuna.Episerver.RedirectHandler
             }
 
             [Test]
-            public void _then_the_querystring_is_only_forwarded_if_specified()
+            public void _then_the_most_specific_redirect_is_used()
+            {
+                _redirects.Add(new CustomRedirect("/xyz",
+                    "/b", false, true, true));
+                _redirects.Add(new CustomRedirect("/xyz?x=y",
+                    "/correct", false, true, true));
+                _sut.Redirect("", new Uri("http://www.incoming.com/" + "xyz?x=y"))
+                    .NewUrl.ShouldEqual("/correct?x=y");
+            }
+
+            [Test]
+            public void _and_not_found_url_contains_norwegian_characters_then_the_querystring_is_only_forwarded_if_specified()
             {
                 _redirects.Add(new CustomRedirect("/åøæ",
                     "/b", false, true, true));
@@ -244,6 +257,28 @@ namespace Creuna.Episerver.RedirectHandler
                     "/correct", false, true, false));
                 _sut.Redirect("", new Uri("http://www.incoming.com/" + "åøæ?x=y"))
                     .NewUrl.ShouldEqual("/correct");
+            }
+
+            [Test]
+            public void _then_the_querystring_is_not_forwarded_when_query_string_not_included()
+            {
+                _redirects.Add(new CustomRedirect("/xyz",
+                    "/b", appendMatchToNewUrl: false, exactMatch: true, includeQueryString: true));
+                _redirects.Add(new CustomRedirect("/xyz?x=y",
+                    "/correct", appendMatchToNewUrl: false, exactMatch: true, includeQueryString: false));
+                _sut.Redirect("", new Uri("http://www.incoming.com/" + "xyz?x=y"))
+                    .NewUrl.ShouldEqual("/correct");
+            }
+
+            [Test]
+            public void _then_the_querystring_is_only_forwarded_if_specified()
+            {
+                _redirects.Add(new CustomRedirect("/xyz",
+                    "/b", appendMatchToNewUrl: false, exactMatch: true, includeQueryString: false));
+                _redirects.Add(new CustomRedirect("/xyz?x=y",
+                    "/correct", appendMatchToNewUrl: false, exactMatch: true, includeQueryString: true));
+                _sut.Redirect("", new Uri("http://www.incoming.com/" + "xyz?x=y"))
+                    .NewUrl.ShouldEqual("/correct?x=y");
             }
         }
 
@@ -290,7 +325,7 @@ namespace Creuna.Episerver.RedirectHandler
             public void Absolute_uris_with_nonexact_match_does_not_throw_loop_exception()
             {
                 _redirects.Add(new CustomRedirect("/a",
-                    "http://www.externalsite.com", true, false, true));
+                    "http://www.externalsite.com/", appendMatchToNewUrl: true, exactMatch: false, includeQueryString: true));
                 _sut.Redirect(string.Empty, new Uri("http://mysite.com/a/aaaaaa"))
                     .NewUrl.ShouldEqual("http://www.externalsite.com/aaaaaa");
             }
@@ -298,8 +333,8 @@ namespace Creuna.Episerver.RedirectHandler
             [Test]
             public void Append_with_querystrings_included_redirects_to_appended_url_with_querystring()
             {
-                _redirects.Add(new CustomRedirect("/de/",
-                    "/de-welcome/", true, true, true));
+                _redirects.Add(new CustomRedirect("/de",
+                    "/de-welcome/", appendMatchToNewUrl: true, exactMatch: true, includeQueryString: true));
                 _sut.Redirect(string.Empty, new Uri("http://mysite.com/de/?parameter=value"))
                     .NewUrl.ShouldEqual("/de-welcome/?parameter=value");
             }
@@ -344,10 +379,11 @@ namespace Creuna.Episerver.RedirectHandler
             public void The_query_string_is_recognized()
             {
                 var oldUrl = "http://staging.seafoodfromnorway.co.uk/recipes/england/norwegian-skrei,-michel%E2%80%99s-way-skrei-bourguignonne?jalla=mikk";
-                var expected = "result";
+                var newUrl = "result";
+                var expected = "result?jalla=mikk";
                 _redirects.Add(new CustomRedirect(
                     "http://staging.seafoodfromnorway.co.uk/Recipes/England/Norwegian-Skrei,-Michel%e2%80%99s-Way-Skrei-Bourguignonne",
-                    expected, false, true, true));
+                    newUrl, appendMatchToNewUrl: false, exactMatch: true, includeQueryString: true));
                 _sut.Redirect(string.Empty, new Uri(oldUrl))
                     .NewUrl.ShouldEqual(expected);
             }
